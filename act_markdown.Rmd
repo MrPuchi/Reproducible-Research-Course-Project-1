@@ -1,0 +1,62 @@
+---
+title: "Coursera - Reproducible Research W2 Project"
+author: "Juan Zacarias"
+date: "August 7, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Loading and preprocessing data
+
+```{r activity}
+#Loading libraries
+
+library(zip)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(timeDate)
+
+#Loading and unziping data
+
+urlfile <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+download.file(urlfile,"amd.zip")
+unzip("amd.zip")
+activity <- read.csv("activity.csv")
+
+#Having a first look to structure and data
+str(activity)
+head(activity)
+
+#Checking for NA proportion by column
+colMeans(is.na(activity))
+
+#Making a further analysis on NA values
+  # 1. NA values are only present on the column steps. Moving dates with NA values and analyzing number of NA per date
+    activityNA <- subset(activity,is.na(steps))
+    aggregate(interval~date, data = activityNA, length)
+  # 2. comparing with number of rows per date in non NA dates
+    aggregate(steps~date, data = activity, length)
+    
+# a total of 8 dates register NA values for each amount of steps per interval. For now, I will continue analying the data without the NA dates.
+activitynonNA <- subset(activity, !is.na(steps))
+
+```
+
+# What is mean total number of steps taken per day?
+
+
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
